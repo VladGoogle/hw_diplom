@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from './local.strategy';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { JwtStrategy } from './jwt.strategy';
         }),
     ],
     providers: [
+        LocalStrategy,
         AuthService,
         JwtStrategy
     ],

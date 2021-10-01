@@ -12,17 +12,15 @@ export class Card extends Model<Card> {
     id: number;
     
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false,
-        unique:true
     })
     external_id: number;
 
     @ForeignKey(() => User)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false,
-        unique:true
     })
     user_id: number;
 
