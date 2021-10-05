@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./db:/app/db
+      - ./user:/app/user
+    env_file: ".env"
+    depends_on:
+      - database
+    ports:
+      - "3001:3001"
+
+
+
+  database:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_val:/var/lib/postgresql/data
+    env_file: ".env"
+
+volumes:
+  db_val:
+    driver: local

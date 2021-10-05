@@ -12,7 +12,7 @@ export class ProductorderController {
     }
 
     @Patch('change/quantity/product/order/:id')
-    async changeProdOrderQuantity(@Body () quant:number, @Param() id) {
+    async changeProdOrderQuantity(@Body () quant:number, @Param('id') id) {
         return await this.productOrderService.changeProdQuantity(id, quant)
     }
 
@@ -22,12 +22,12 @@ export class ProductorderController {
     }
 
     @Get('get/product/order/by/:id')
-    async getProductToOrderById(@Param() id) {
+    async getProductToOrderById(@Param('id') id) {
         return await this.productOrderService.getProdWithMods(id)
     }
 
     @Delete('delete/product/order')
-    async deleteProductToOrder(@Param() id) {
+    async deleteProductToOrder(@Param('id') id) {
         return await this.productOrderService.deleteProdWithMods(id)
     }
 

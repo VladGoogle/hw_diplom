@@ -9,7 +9,7 @@ const stripe = new Stripe('sk_test_51JZVxnLkFhXapQcDocZOJvW6u92pXY4NO7fiw3p05m31
 {
     apiVersion: '2020-08-27',
 });
-const DEFAULT_CURRENCY = 'usd'
+const DEFAULT_CURRENCY = 'USD'
 const COMPLETED_STATUS = 'succeeded'
 const REFUNDED_STATUS = 'refunded'
 

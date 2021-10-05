@@ -5,6 +5,5 @@
     "username": "db_user",
     "password": "db_password",
     "database": "pg_users",
-    "entities": ["src/**/*.user.entity.ts"],
-    "synchronize": true
+    "entities": ["src/**/*.entity.ts"]
   }
