@@ -19,18 +19,18 @@ export class Product {
     @Column()
     description: string;
 
-    @ManyToOne(type => Label, label => label.products)
+    @ManyToOne(() => Label, (label:Label) => label.products)
     label: Label;
 
     @RelationId((product: Product) => product.label) // you need to specify target relation
     label_id: number;
 
-    @ManyToOne(type => Category, category => category.products)
+    @ManyToOne(() => Category, (category:Category) => category.products)
     category: Category;
 
     @RelationId((product: Product) => product.category) // you need to specify target relation
     category_id: number;
 
-    @OneToMany(() => ModToProd, modToProd => modToProd.product)
+    @OneToMany(() => ModToProd, (modToProd:ModToProd) => modToProd.product)
     public modToProds!: ModToProd[];
   }
