@@ -5,9 +5,11 @@ services:
     container_name: server
     build:
       context: .
+      target: build
       dockerfile: ./Dockerfile
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     env_file: ".env"
     networks:
       - appnet
@@ -15,6 +17,7 @@ services:
       - database
     ports:
       - "3001:3001"
+    command: npm run start:dev
 
 
 

@@ -2,6 +2,7 @@ import { Controller, Body, Post, UseGuards, Request,Req, Get, Param, Delete, Put
 import { TransactionDto } from '../transaction/dto/transaction.dto';
 import { ChargeStatus } from '../transaction/transaction.entity';
 import { StripeService } from './stripe.service';
+import {UsersService} from "../users/users.service";
 
 
 @Controller('users')

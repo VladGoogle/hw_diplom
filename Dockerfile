@@ -12,8 +12,6 @@ COPY . .
 
 RUN npm run build
 
-RUN rm -rf node_modules
-
 FROM node:14-alpine as production
 
 
@@ -26,8 +24,8 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-COPY ./ ./
+COPY . .
 
 COPY --from=build /usr/src/app/dist ./dist
 
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
