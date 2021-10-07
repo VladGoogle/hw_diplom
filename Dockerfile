@@ -12,6 +12,8 @@ COPY . .
 
 RUN npm run build
 
+RUN rm -rf node_modules
+
 FROM node:14-alpine as production
 
 

@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      target: production
     volumes:
       - .:/usr/src/app
     env_file: ".env"
