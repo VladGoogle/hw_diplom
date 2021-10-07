@@ -31,8 +31,8 @@ services:
 
 
 
-    networks:
-  appnet
+networks:
+  appnet:
 
 
 volumes:

@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Modifier } from './modifier.entity';
 import { ModifierDto } from './dto/modifier.dto';
 import { UsersService } from '../users/users.service';
-import { USER_REPOSITORY } from '../../core/constants';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
