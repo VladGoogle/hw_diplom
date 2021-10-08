@@ -1,14 +1,15 @@
 {
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "db_user",
-    "password": "db_password",
-    "database": "pg_users",
-    "entities": ["src/modules/**/*.entity.ts"],
-    "migrationsTableName": "custom_migration_table",
-    "migrations": ["migration/*.ts"],
-    "cli": {
-        "migrationsDir": "migration"
-    }
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "db_user",
+  "password": "db_password",
+  "database": "pg_users",
+  "entities": ["src/modules/**/*.entity.ts"],
+  "migrationsTableName": "custom_migration_table",
+  "migrations": ["migration/*.ts"],
+  "cli": {
+    "entitiesDir": "src/modules",
+    "migrationsDir": "migration"
   }
+}
