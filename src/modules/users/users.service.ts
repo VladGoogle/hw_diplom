@@ -16,7 +16,7 @@ constructor(
         const data = await this.userRepository.create({
             firstName:user.firstName,
             lastName:user.lastName,
-            email: user.lastName,
+            email: user.email,
             password:user.password,
             phone: user.phone,
             type:user.type

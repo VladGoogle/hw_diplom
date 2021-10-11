@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import {UserDto} from "../users/dto/user.dto";
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,7 @@ export class AuthService {
         }
 
         // tslint:disable-next-line: no-string-literal
-        const { password, ...result } = user['dataValues'];
+        const { password, ...result } = user;
         return result;
     }
 
@@ -33,7 +34,7 @@ export class AuthService {
         return { user, token };
     }
 
-    public async create(user) {
+    public async create(user:UserDto) {
         // hash the password
         const pass = await this.hashPassword(user.password);
 
@@ -41,10 +42,10 @@ export class AuthService {
         const newUser = await this.userService.registerUser({ ...user, password: pass });
 
         // tslint:disable-next-line: no-string-literal
-        const { password, ...result } = newUser['dataValues'];
+        const { password, ...result } = user;
 
         // generate token
-        const token = await this.generateToken(result);
+        const token = await this.generateToken(newUser);
 
         // return the user and the token
         return { user: result, token };
