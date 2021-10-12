@@ -9,7 +9,7 @@ export class Label {
     @Column({unique:true})
     name: string;
 
-    @Column()
+    @Column({nullable: true})
     image: string;
 
     @OneToMany(() => Product, (product:Product) => product.label)

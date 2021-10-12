@@ -30,6 +30,7 @@ export class AuthService {
   async login(user: LoginDto) {
     const payload = { email: user.email, id: parseInt(user.id)};
     const userObj = await this.userService.getUserByEmail(user.email)
+    console.log(userObj);
     const isValid = await bcrypt.compare(user.password, userObj.password)
     if(!isValid) {
       throw new BadRequestException('User credentials invalid')

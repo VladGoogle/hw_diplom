@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import {Injectable, Inject, BadRequestException, ForbiddenException} from '@nestjs/common';
 import { Product } from './product.entity';
 import { ProductDto } from './dto/product.dto';
 import { Repository } from 'typeorm';
@@ -21,22 +21,20 @@ constructor(
       ) {}
     
       async createProduct(prod: ProductDto, id:number): Promise<Product> {
-        const user = await this.userService.getUserById(id)
-        if(user.type ==="admin")
-        {
-        const data = await this.userRepository.create({
-            name:prod.name,
-            price:prod.price,
-            description:prod.description,
-            label_id: prod.label_id,
-            category_id:prod.category_id
-        })
-        return data;
-    }
-    else {
-        throw "You must be an admin to create products"
-    }
-    }
+          const user = await this.userService.getUserById(id)
+          if (user.type === "admin") {
+              let prodEntity = new Product()
+              prodEntity.name = prod.name,
+                  prodEntity.price = prod.price,
+                  prodEntity.description = prod.description,
+                  prodEntity.label_id = prod.label_id,
+                  prodEntity.category_id = prod.category_id
+              const data = await this.userRepository.save(prodEntity)
+              return data;
+          } else {
+              throw new ForbiddenException("You must be an admin to create products")
+          }
+      }
 
 
     async getProductById(id: number): Promise<Product> {
@@ -57,7 +55,7 @@ constructor(
             await this.userRepository.delete(prod_id);
         }
         else {
-            throw "You must be an admin to delete droducts"
+            throw new ForbiddenException("You must be an admin to delete products")
         }
     }
 
@@ -75,7 +73,7 @@ constructor(
                     return data;
         }
         else {
-            throw "You must be an admin to update droducts"
+            throw new ForbiddenException("You must be an admin to update products")
         }
     }
     

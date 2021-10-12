@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import {Injectable, Inject, ForbiddenException} from '@nestjs/common';
 import { Modifier } from './modifier.entity';
 import { ModifierDto } from './dto/modifier.dto';
 import { UsersService } from '../users/users.service';
@@ -18,15 +18,15 @@ constructor(
         const user = await this.userService.getUserById(id)
         if(user.type ==="admin")
         {
-        const data = await this.userRepository.create({
-            name:mod.name,
-            price:mod.price
-        });
-        return data;
-    }
-    else {
-        throw "You must be an admin to create modifiers"
-    }
+        let modEntity = new Modifier()
+            modEntity.name = mod.name,
+            modEntity.price= mod.price
+            const data = await this.userRepository.save(modEntity)
+            return data;
+        }
+        else {
+            throw new ForbiddenException("You must be an admin to create modifiers")
+        }
     }
 
     async getModifierById(id: number): Promise<Modifier | undefined> {
@@ -35,7 +35,7 @@ constructor(
     }
 
     async getModifierByName(name: string): Promise<Modifier | undefined> {
-        const data =  await this.userRepository.findOne(name);
+        const data =  await this.userRepository.findOne({where:{name}});
         return data;
     }
 
@@ -52,12 +52,9 @@ constructor(
         await this.userRepository.delete(mod_id);
    }
    else {
-       throw "You must be an admin to delete modifiers"
+           throw new ForbiddenException("You must be an admin to delete modifiers")
    }
     
 }
 
-
-    
-    
 }

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Label } from './label.entity';
 import { LabelDto } from './dto/label.dto';
 import { UsersService } from '../users/users.service';
+import {User} from "../users/user.entity";
 
 @Injectable()
 export class LabelService {
@@ -17,9 +18,9 @@ export class LabelService {
             const user = await this.userService.getUserById(id)
             if(user.type ==="admin")
             {
-            const data = await this.userRepository.create({
-                name:label.name
-            })
+                let labelEntity = new Label();
+                labelEntity.name = label.name
+                const data = await this.userRepository.save(labelEntity)
             return data;
         }
         else {
@@ -33,7 +34,7 @@ export class LabelService {
         }
     
         async getLabelByName(name: string): Promise<Label | undefined> {
-            const data =  await this.userRepository.findOne(name);
+            const data =  await this.userRepository.findOne({where: {name:name}});
             return data;
         }
     

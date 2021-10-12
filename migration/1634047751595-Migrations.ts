@@ -1,12 +1,12 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class Migrations1634036635812 implements MigrationInterface {
-    name = 'Migrations1634036635812'
+export class Migrations1634047751595 implements MigrationInterface {
+    name = 'Migrations1634047751595'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "user" ("id" SERIAL NOT NULL, "firstName" character varying NOT NULL, "lastName" character varying NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "phone" character varying NOT NULL, "type" text NOT NULL, CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "category" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, CONSTRAINT "UQ_23c05c292c439d77b0de816b500" UNIQUE ("name"), CONSTRAINT "PK_9c4e4a89e3674fc9f382d733f03" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "label" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "image" character varying NOT NULL, CONSTRAINT "UQ_972f95f212512a35e838562ea30" UNIQUE ("name"), CONSTRAINT "PK_5692ac5348861d3776eb5843672" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "label" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "image" character varying, CONSTRAINT "UQ_972f95f212512a35e838562ea30" UNIQUE ("name"), CONSTRAINT "PK_5692ac5348861d3776eb5843672" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "product" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price" integer NOT NULL, "description" character varying NOT NULL, "labelId" integer, "categoryId" integer, CONSTRAINT "PK_bebc9158e480b949565b4dc7a82" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "mod_to_prod" ("id" SERIAL NOT NULL, "productId" integer, "modifierId" integer, CONSTRAINT "PK_3ae8723ac54776d12f078b7361c" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "modifier" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price" integer NOT NULL, CONSTRAINT "UQ_8f06bb4ce538ef437fe650b8be0" UNIQUE ("name"), CONSTRAINT "PK_30c20db2bc7a8c2318b4db0dfc0" PRIMARY KEY ("id"))`);

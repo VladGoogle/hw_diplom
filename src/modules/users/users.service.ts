@@ -12,19 +12,19 @@ export class UsersService {
   ) {}
 
   async registerUser(user: UserDto): Promise<User> {
-    const data = await this.userRepository.create({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      phone: user.phone,
-      type: user.type,
-    });
+    let userEntity = new User();
+        userEntity.firstName = user.firstName,
+        userEntity.lastName = user.lastName
+        userEntity.email =user.email,
+        userEntity.password = user.password,
+            userEntity.phone=user.phone
+        userEntity.type = user.type
+     const data = await this.userRepository.save(userEntity);
     return data;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    const data = await this.userRepository.findOne(email);
+    const data = await this.userRepository.findOne({ where: { email: email } });
     console.log(data);
     return data;
   }

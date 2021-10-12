@@ -22,7 +22,7 @@ export class LabelController {
           }
         })
       }))
-      async uploadLabelImage( @UploadedFile() file, @Req() req, @Param() id) {
+      async uploadLabelImage( @UploadedFile() file, @Req() req, @Param('id') id) {
         console.log(file)
         await this.labelService.addLabelImage(id, req.file.path)
       }
@@ -38,7 +38,7 @@ export class LabelController {
     }
 
     @Get('admin/get/label/by/:id')
-    async getLabelById(@Param() id) {
+    async getLabelById(@Param('id') id) {
         return await this.labelService.getLabelById(id);
     }
 
@@ -48,7 +48,7 @@ export class LabelController {
     }
 
     @Delete('admin/delete/label/by/:id')
-    async deleteLabel(@Param() id, @Body() user_id) {
+    async deleteLabel(@Param('id') id, @Body() user_id) {
         return await this.labelService.deleteLabel(user_id, id);
     }
 
