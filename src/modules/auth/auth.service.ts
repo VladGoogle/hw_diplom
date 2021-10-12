@@ -1,68 +1,63 @@
-import { Injectable } from '@nestjs/common';
+import {BadRequestException, HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import {UserDto} from "../users/dto/user.dto";
+import { UserDto } from '../users/dto/user.dto';
+import {IsNotEmpty} from "class-validator";
+
+export class LoginDto {
+  id:string;
+  email:string;
+  password:string
+}
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly userService: UsersService,
-        private readonly jwtService: JwtService,
-    ) { }
+  constructor(
+    private readonly userService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-    async validateUser(email: string, pass: string) {
-        // find if user exist with this email
-        const user = await this.userService.getUserByEmail(email);
-        if (!user) {
-            return null;
-        }
+  async validateUser(obj:LoginDto): Promise<any> {
+    const user = await this.userService.getUserByEmail(obj.email)
+    if (user && user.password === obj.password) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
 
-        // find if user password match
-        const match = await this.comparePassword(pass, user.password);
-        if (!match) {
-            return null;
-        }
+  async login(user: LoginDto) {
+    const payload = { email: user.email, id: parseInt(user.id)};
+    const userObj = await this.userService.getUserByEmail(user.email)
+    const isValid = await bcrypt.compare(user.password, userObj.password)
+    if(!isValid) {
+      throw new BadRequestException('User credentials invalid')
+    }
+    const access_token = this.jwtService.sign(payload)
+    return {
+      user, access_token
+    };
+  }
 
-        // tslint:disable-next-line: no-string-literal
-        const { password, ...result } = user;
-        return result;
+  public async register(user:UserDto) {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    try {
+      const createdUser = await this.userService.registerUser({
+        ...user,
+        password: hashedPassword,
+      });
+      createdUser.password = undefined;
+      return createdUser;
+    } catch (error) {
+     console.log(error)
     }
 
-    public async login(user) {
-        const token = await this.generateToken(user);
-        return { user, token };
-    }
+  }
 
-    public async create(user:UserDto) {
-        // hash the password
-        const pass = await this.hashPassword(user.password);
+ private validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 
-        // create the user
-        const newUser = await this.userService.registerUser({ ...user, password: pass });
-
-        // tslint:disable-next-line: no-string-literal
-        const { password, ...result } = user;
-
-        // generate token
-        const token = await this.generateToken(newUser);
-
-        // return the user and the token
-        return { user: result, token };
-    }
-
-    private async generateToken(user) {
-        const token = await this.jwtService.signAsync(user);
-        return token;
-    }
-
-    private async hashPassword(password) {
-        const hash = await bcrypt.hash(password, 10);
-        return hash;
-    }
-
-    private async comparePassword(enteredPassword, dbPassword) {
-        const match = await bcrypt.compare(enteredPassword, dbPassword);
-        return match;
-    }
 }
