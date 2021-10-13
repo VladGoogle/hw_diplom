@@ -4,6 +4,7 @@ import { Card } from '../card/card.entity';
 import { Product } from '../product/product.entity';
 import { ProductOrder } from '../productorder/productorder.entity';
 import { Transaction } from '../transaction/transaction.entity';
+import {ModToProductToOrder} from "../modproductorder/modproductorder.entity";
 
 
 export enum orderStatus {
@@ -27,7 +28,9 @@ export class Order {
 
     @Column('text')
     status: orderStatus;
-    
+
+    @Column()
+    isMods: boolean;
 
     @ManyToOne(() => User, (user:User) => user.orders)
     user: User;
@@ -40,6 +43,12 @@ export class Order {
 
     @RelationId((order: Order) => order.prodorders) // you need to specify target relation
     prodOrder_id: number;
+
+    @OneToMany(() => ModToProductToOrder, (modprodorder:ModToProductToOrder)=>modprodorder.order)
+    modprodorders:ModToProductToOrder[]
+
+    @RelationId((order: Order) => order.modprodorders) // you need to specify target relation
+    modProdOrder_id: number;
 
     @OneToOne(() => Transaction, (transaction: Transaction) => transaction.order)
     transaction: Transaction;

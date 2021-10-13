@@ -24,7 +24,7 @@ constructor(
           const user = await this.userService.getUserById(id)
           if (user.type === "admin") {
               let prodEntity = new Product()
-              prodEntity.name = prod.name,
+                  prodEntity.name = prod.name,
                   prodEntity.price = prod.price,
                   prodEntity.description = prod.description,
                   prodEntity.label_id = prod.label_id,
@@ -38,7 +38,8 @@ constructor(
 
 
     async getProductById(id: number): Promise<Product> {
-        const data = await this.userRepository.findOne({id}, {relations:["label", "category"]})
+        console.log(id)
+        const data = await this.userRepository.findOne( {where:{id:id}, relations:["label", "category"]})
         return data;
     }
 

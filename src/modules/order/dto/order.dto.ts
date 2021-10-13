@@ -19,9 +19,12 @@ export class OrderDto {
     tax:number;
 
     @IsNotEmpty()
-    user_id: number;
+    isMods: boolean;
 
     @IsNotEmpty()
+    user_id: number;
+
     prodOrder_id: number;
 
+    modProdOrder_id: number;
 }

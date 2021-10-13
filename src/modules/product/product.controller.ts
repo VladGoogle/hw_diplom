@@ -18,8 +18,9 @@ export class ProductController {
     }
 
     @Get('product/get/by/:id')
-    async getProductById(@Param() id) {
-        return await this.productService.getProductById(id)
+    async getProductById(@Param('id') id:string) {
+        const prod_id = parseInt(id)
+        return await this.productService.getProductById(prod_id)
     }
 
     @Get('product/get/list')
@@ -28,7 +29,7 @@ export class ProductController {
     }
 
     @Delete('admin/:id/delete/product')
-    async deleteProduct(@Param() user_id, @Body() prod_id:number) {
+    async deleteProduct(@Param('id') user_id, @Body() prod_id:number) {
         return await this.productService.deleteProduct(user_id, prod_id)
     }
 

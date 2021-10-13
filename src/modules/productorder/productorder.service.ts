@@ -13,14 +13,13 @@ export class ProductOrderService {
           ) {}
 
           async addProductToOrder(prod: ProductOrderDto): Promise<ProductOrder> {
-                const data = this.userRepository.create({
-                    quantity: prod.quantity,
-                    price:prod.price,
-                    modProd_id:prod.modProd_id,
-                    modProdOrder_id: prod.modProdToOrder_id
-                })
-                return data;
-          }
+               let prodOrderEntity = new ProductOrder()
+                    prodOrderEntity.quantity = prod.quantity;
+                    prodOrderEntity.price =prod.price;
+                    prodOrderEntity.modProd_id =prod.modProd_id
+              const data = await  this.userRepository.save(prodOrderEntity)
+              return data;
+    }
 
           async getProductsToOrder(): Promise<ProductOrder[]> {
             const result = await this.userRepository.find({relations:["modprod", "modtoprodstoorder"]})

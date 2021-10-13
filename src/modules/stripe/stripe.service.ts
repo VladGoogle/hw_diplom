@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {ForbiddenException, Injectable} from '@nestjs/common';
 import Stripe from 'stripe';
 import { CardService } from '../card/card.service';
 import { TransactionDto } from '../transaction/dto/transaction.dto';
@@ -32,6 +32,7 @@ export class StripeService {
         }).then(console.log)
     }
 
+
     public async newSource (card_id:number,customer_token:string)
     {
         const card = await this.cardService.getCardById(card_id)
@@ -59,17 +60,21 @@ export class StripeService {
         const user = await this.userService.getUserById(user_id)
         if(user.type ==='admin')
         {
-
-        await stripe.refunds.create({
+            await stripe.refunds.create({
             charge: charge_id,
             amount: amount
           }).then(console.log);
           
-          const charge = await this.transService.changeTransactionAfterRefund(status, trans_id, amount)
+          const charge = await this.transService.changeTransactionAfterRefundForAdmin(status, trans_id, amount)
           return charge;
         }
         else {
-            throw 'You must be an admin to refund charges'
+            await stripe.refunds.create({
+                charge: charge_id
+            }).then(console.log);
+
+            const charge = await this.transService.changeTransactionAfterRefundForCustomer(status, trans_id)
+            return charge;
         }
     }
      

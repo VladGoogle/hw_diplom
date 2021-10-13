@@ -16,7 +16,7 @@ export class Transaction {
     source: string;
 
 
-    @Column()
+    @Column({nullable:true})
     amount: number;
 
     @Column('text')

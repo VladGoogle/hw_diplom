@@ -11,24 +11,24 @@ const REFUNDED_STATUS = 'refunded'
 @Injectable()
 export class TransactionService {
 
-constructor( 
+constructor(
     @InjectRepository(Transaction)
         private userRepository: Repository<Transaction>,
         private userService:UsersService
       ) {}
-    
+
     async createTransaction(pay: TransactionDto): Promise<Transaction> {
-        const data = await this.userRepository.create({
-            source:pay.source,
-            amount:pay.amount,
-            status:pay.status,
-            currency:pay.currency,
-            customer_token:pay.customer_token,
-            order_id:pay.order_id,
-            card_id:pay.card_id
-        });
+        let transactionEntity = new Transaction()
+            transactionEntity.source= pay.source,
+            transactionEntity.amount= pay.amount,
+            transactionEntity.status= pay.status,
+            transactionEntity.currency= pay.currency,
+            transactionEntity.customer_token= pay.customer_token,
+            transactionEntity.order_id= pay.order_id,
+            transactionEntity.card_id= pay.card_id
+        const data = await this.userRepository.save(transactionEntity)
         return data;
-    }
+        }
 
     async getTransactionById(id: number): Promise<Transaction | undefined> {
         const data =  await this.userRepository.findOne({id},{relations:['order', 'card']});
@@ -44,7 +44,7 @@ constructor(
        await this.userRepository.delete(id);
     }
 
-    async changeTransactionAfterRefund(status: ChargeStatus, id: number, amount:number): Promise<Transaction>
+    async changeTransactionAfterRefundForAdmin(status: ChargeStatus, id: number, amount:number): Promise<Transaction>
     {
             const payment = await this.userRepository.findOne({id},{relations:['order', 'card']})
             payment.status = status;
@@ -52,5 +52,13 @@ constructor(
             await this.userRepository.save(payment)
             return payment;
         }
+
+    async changeTransactionAfterRefundForCustomer(status: ChargeStatus, id: number): Promise<Transaction>
+    {
+        const payment = await this.userRepository.findOne({id},{relations:['order', 'card']})
+        payment.status = status;
+        await this.userRepository.save(payment)
+        return payment;
+    }
     }
 

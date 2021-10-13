@@ -12,12 +12,12 @@ export class CardService {
           ) {}
 
           async createCard(card: CardDto): Promise<Card> {
-            const data = await this.userRepository.create({
-                external_id:card.external_id,
-                user_id:card.user_id
-            })
-        return data;
-        }
+            let cardEntity =  new Card()
+                cardEntity.external_id = card.external_id,
+                cardEntity.user_id =card.user_id
+              const data = await this.userRepository.save(cardEntity)
+              return data;
+            }
     
         async getCardById(id: number): Promise<Card | undefined> {
             const data =  await this.userRepository.findOne({id}, {relations:['user']});
@@ -37,6 +37,4 @@ export class CardService {
         async deleteCard(id:number): Promise<void> {
             await this.userRepository.delete(id);
     }
-
-
 }

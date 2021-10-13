@@ -24,7 +24,7 @@ export class StripeController {
         return await this.stripeService.payForOrderWithToken(charge)
     }
 
-    @Post('admin/:user_id/create/refund/:trans_id')
+    @Post(':user_id/create/refund/:trans_id')
     async createRefund(@Body() charge_id:string, amount:number, status: ChargeStatus, @Param('user_id') user_id, @Param('trans_id') trans_id) {
         return await this.stripeService.createRefund(charge_id, amount, trans_id,status,user_id)
     }

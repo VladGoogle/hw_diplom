@@ -13,12 +13,12 @@ export class ModtoprodService {
           ) {}
 
           async addModToProduct(obj: ModToProdDto): Promise<ModToProd> {
-                const data = this.userRepository.create({
-                    prod_id:obj.prod_id,
-                    mod_id:obj.mod_id
-                })
-                return data;
-          }
+                let modprodEntity = new ModToProd()
+                    modprodEntity.prod_id = obj.prod_id,
+                    modprodEntity.mod_id = obj.mod_id
+              const data = await this.userRepository.save(modprodEntity)
+              return data;
+    }
 
           async getProdsWithMods(): Promise<ModToProd[]> {
             const result = await this.userRepository.find({relations:["product", "modifier"]})
@@ -29,8 +29,5 @@ export class ModtoprodService {
             const result = await this.userRepository.findOne({id},{relations:["product", "modifier"]})
             return result;
         }
-
-
-
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {ForbiddenException, Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order, orderStatus } from './order.entity';
@@ -10,31 +10,39 @@ import { User } from '../users/user.entity';
 
 @Injectable()
 export class OrderService {
-    constructor( 
+    constructor(
         @InjectRepository(Order)
             private userRepository: Repository<Order>,
             private userService:UsersService
           ) {}
 
           async createOrder(order: OrderDto): Promise<Order> {
-                const data = this.userRepository.create({
-                    description:order.description,
-                    totalPrice:order.totalPrice,
-                    tax:order.tax,
-                    status:order.status,
-                    user_id:order.user_id,
-                    prodOrder_id:order.prodOrder_id
-                })
-                return data;
-          }
+                let orderEntity = new Order()
+                    orderEntity.description = order.description,
+                    orderEntity.totalPrice =order.totalPrice,
+                    orderEntity.tax =order.tax,
+                    orderEntity.status =order.status,
+                        orderEntity.user_id =order.user_id,
+                        orderEntity.isMods =order.isMods
+              if(order.isMods)
+              {
+                  orderEntity.modProdOrder_id = order.modProdOrder_id
+              }
+              else {
+                  orderEntity.prodOrder_id = order.prodOrder_id
+              }
+              const data =await this.userRepository.save(orderEntity)
+              return data;
+    }
+
 
           async getOrders(): Promise<Order[]> {
-            const result = await this.userRepository.find({relations:["user", "prodorders"]})
+            const result = await this.userRepository.find({relations:["user", "prodorders", "modprodorders"]})
             return result;
         }
 
         async getOrderById(id:number): Promise<Order> {
-            const result = await this.userRepository.findOne({id},{relations:["user", "prodorders"]})
+            const result = await this.userRepository.findOne({id},{relations:["user", "prodorders", "modprodorders"]})
             return result;
         }
 
@@ -43,13 +51,13 @@ export class OrderService {
             const user = await this.userService.getUserById(user_id)
             if(user.type ==='admin')
             {
-                const order = await this.userRepository.findOne({id},{relations:["user", "prodorders"]})
+                const order = await this.userRepository.findOne({id},{relations:["user", "prodorders", "modprodorders"]})
                 order.status = status;
                 await this.userRepository.save(order)
                 return order;
             }
             else {
-                throw "You must be an admin to update order status"
+                throw new ForbiddenException("You must be an admin to update order status")
             }
         }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {ForbiddenException, Injectable} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './category.entity';
@@ -17,14 +17,14 @@ export class CategoryService {
             const user = await this.userService.getUserById(id)
             if(user.type ==="admin")
             {
-            const data = await this.userRepository.create({
-                    name: category.name
-            })
-            return data;
-        }
-        else {
-            throw "You must be an admin to create categories"
-        }
+           let categoryEntity = new Category()
+                    categoryEntity.name = category.name
+                const data = await this.userRepository.save(categoryEntity)
+                return data;
+            }
+            else {
+                throw new ForbiddenException("You must be an admin to create a category")
+            }
         }
     
         async getCategoryById(id: number): Promise<Category | undefined> {
@@ -33,7 +33,7 @@ export class CategoryService {
         }
     
         async getCategoryByName(name: string): Promise<Category | undefined> {
-            const data =  await this.userRepository.findOne(name);
+            const data =  await this.userRepository.findOne({where:{name:name}});
             return data;
         }
     
@@ -50,7 +50,7 @@ export class CategoryService {
             await this.userRepository.delete(category_id);
        }
        else {
-           throw "You must be an admin to delete categories"
+               throw new ForbiddenException("You must be an admin to create a category")
        }
     }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {ForbiddenException, Injectable} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Label } from './label.entity';
@@ -24,7 +24,7 @@ export class LabelService {
             return data;
         }
         else {
-            throw "You must be an admin to create labels"
+            throw  new ForbiddenException("You must be an admin to create labels")
         }
         }
     
@@ -51,7 +51,7 @@ export class LabelService {
             await this.userRepository.delete(label_id);
        }
        else {
-           throw "You must be an admin to delete labels"
+               throw  new ForbiddenException("You must be an admin to delete labels")
        }
         
     }

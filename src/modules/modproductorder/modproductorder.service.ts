@@ -12,13 +12,13 @@ export class ModproductorderService {
           ) {}
 
           async addModToProductToOrder(obj: ModToProdToOrderDto): Promise<ModToProductToOrder> {
-            const data = this.userRepository.create({
-                prodOrder_id:obj.prodOrder_id,
-                mod_id:obj.mod_id,
-                totalProductPrice:obj.totalProductPrice
-            })
-            return data;
-      }
+            let modProdOrderEntity = new ModToProductToOrder()
+              modProdOrderEntity.prodOrder_id = obj.prodOrder_id,
+                  modProdOrderEntity.mod_id = obj.mod_id,
+                  modProdOrderEntity.totalProductPrice = obj.totalProductPrice
+              const data = await this.userRepository.save(modProdOrderEntity)
+              return data;
+            }
 
       async getOrderProductsWithMods(): Promise<ModToProductToOrder[]> {
         const result = await this.userRepository.find({relations:["productOrder", "modifier"]})

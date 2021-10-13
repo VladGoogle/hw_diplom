@@ -29,7 +29,5 @@ export class ProductOrder {
 
      @OneToMany(() => ModToProductToOrder, modToProdToOrder => modToProdToOrder.productorder)
      public modtoprodstoorder!: ModToProductToOrder[];
-
-     @RelationId((prodorder: ProductOrder) => prodorder.modtoprodstoorder) // you need to specify target relation
-     modProdOrder_id: number;
+     
 }
