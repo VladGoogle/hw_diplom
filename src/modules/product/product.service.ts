@@ -30,6 +30,7 @@ constructor(
                   prodEntity.label_id = prod.label_id,
                   prodEntity.category_id = prod.category_id
               const data = await this.userRepository.save(prodEntity)
+              console.log(data)
               return data;
           } else {
               throw new ForbiddenException("You must be an admin to create products")
@@ -40,6 +41,7 @@ constructor(
     async getProductById(id: number): Promise<Product> {
         console.log(id)
         const data = await this.userRepository.findOne( {where:{id:id}, relations:["label", "category"]})
+        //console.log(data)
         return data;
     }
 
