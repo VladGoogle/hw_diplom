@@ -14,8 +14,8 @@ export class ModtoprodService {
 
           async addModToProduct(obj: ModToProdDto): Promise<ModToProd> {
                 let modprodEntity = new ModToProd()
-                    modprodEntity.prod_id = obj.prod_id,
-                    modprodEntity.mod_id = obj.mod_id
+                    modprodEntity.productId = obj.productId,
+                    modprodEntity.modifierId = obj.modifierId
               const data = await this.userRepository.save(modprodEntity)
               return data;
     }

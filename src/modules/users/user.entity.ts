@@ -30,7 +30,7 @@ export class User {
     @Column('text')
     type: UserType;
 
-    @OneToOne(() => Card, (card: Card) => card.user)
+    @OneToOne(() => Card, card => card.user)
     card: Card;
 
     @OneToMany(() => Order, (order:Order) => order.user)

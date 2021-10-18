@@ -16,27 +16,27 @@ export class ProductOrderService {
                let prodOrderEntity = new ProductOrder()
                     prodOrderEntity.quantity = prod.quantity;
                     prodOrderEntity.price =prod.price;
-                    prodOrderEntity.modProd_id =prod.modProd_id
+                    prodOrderEntity.modtoprodId =prod.modtoprodId
               const data = await  this.userRepository.save(prodOrderEntity)
               return data;
     }
 
           async getProductsToOrder(): Promise<ProductOrder[]> {
-            const result = await this.userRepository.find({relations:["modprod", "modtoprodstoorder"]})
+            const result = await this.userRepository.find({relations:["modprod"]})
             return result;
         }
 
-        async getProdWithMods(id:number): Promise<ProductOrder> {
-            const result = await this.userRepository.findOne({id},{relations:["modProd", "modtoprodstoorder"]})
+        async getProductToOrderById(id:number): Promise<ProductOrder> {
+            const result = await this.userRepository.findOne({id},{relations:["modprod"]})
             return result;
         }
 
-        async deleteProdWithMods(id:number): Promise<void> {
+        async deleteProductToOrder(id:number): Promise<void> {
             await this.userRepository.delete(id)
         }
 
         async changeProdQuantity(id:number, quantity:number): Promise<ProductOrder> {
-            const data = await this.userRepository.findOne({id},{relations:["modProd", "modtoprodstoorder"]})
+            const data = await this.userRepository.findOne({id},{relations:["modprod"]})
             data.quantity = quantity;
             await this.userRepository.save(data)
             return data;

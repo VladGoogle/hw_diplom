@@ -9,10 +9,13 @@ const stripe = new Stripe('sk_test_51JZVxnLkFhXapQcDocZOJvW6u92pXY4NO7fiw3p05m31
 {
     apiVersion: '2020-08-27',
 });
-const DEFAULT_CURRENCY = 'USD'
-const COMPLETED_STATUS = 'succeeded'
-const REFUNDED_STATUS = 'refunded'
 
+
+export class RefundDto {
+    charge_id:string;
+    amount:number;
+    status:ChargeStatus
+}
 
 @Injectable()
 export class StripeService {
@@ -35,6 +38,7 @@ export class StripeService {
 
     public async newSource (card_id:number,customer_token:string)
     {
+        console.log(customer_token)
         const card = await this.cardService.getCardById(card_id)
         await stripe.customers.createSource(
             customer_token,
@@ -47,33 +51,34 @@ export class StripeService {
          await stripe.charges.create({
             source: transaction.source,
             amount: transaction.amount,
-            currency: DEFAULT_CURRENCY,
-            customer: transaction.customer_token
+            currency: transaction.currency,
+            customer: transaction.customer_token,
+             description:transaction.description
         }).then(console.log);
 
         const data = await this.transService.createTransaction(transaction)
         return data;
     }
 
-    public async createRefund(charge_id:string, amount:number, trans_id:number, status:ChargeStatus, user_id:number)
+    public async createRefund(refundObj:RefundDto, trans_id:number, user_id:number)
     {
         const user = await this.userService.getUserById(user_id)
         if(user.type ==='admin')
         {
             await stripe.refunds.create({
-            charge: charge_id,
-            amount: amount
+            charge: refundObj.charge_id,
+            amount: refundObj.amount
           }).then(console.log);
           
-          const charge = await this.transService.changeTransactionAfterRefundForAdmin(status, trans_id, amount)
+          const charge = await this.transService.changeTransactionAfterRefundForAdmin(refundObj.status, trans_id, refundObj.amount)
           return charge;
         }
         else {
             await stripe.refunds.create({
-                charge: charge_id
+                charge: refundObj.charge_id
             }).then(console.log);
 
-            const charge = await this.transService.changeTransactionAfterRefundForCustomer(status, trans_id)
+            const charge = await this.transService.changeTransactionAfterRefundForCustomer(refundObj.status, trans_id)
             return charge;
         }
     }

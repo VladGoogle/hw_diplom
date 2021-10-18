@@ -5,8 +5,8 @@ export class ModToProdToOrderDto {
     totalProductPrice: number;
     
     @IsNotEmpty()
-    prodOrder_id: number;
+    productorderId: number;
 
     @IsNotEmpty()
-    mod_id: number;
+    modifierId: number;
 }

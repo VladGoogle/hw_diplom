@@ -6,6 +6,11 @@ export enum ChargeStatus{
     succeeded = 'succeeded',
     refunded = 'refunded'
 }
+
+export enum ChargeCurrency{
+    USD = 'USD',
+    RUB = 'RUB'
+}
 @Entity()
 export class Transaction {
     @PrimaryGeneratedColumn()
@@ -22,8 +27,8 @@ export class Transaction {
     @Column('text')
     status: ChargeStatus;
 
-    @Column()
-    currency: string;
+    @Column('text')
+    currency: ChargeCurrency;
 
     @Column()
     description: string;
@@ -35,12 +40,14 @@ export class Transaction {
     @OneToOne(() => Order, (order: Order) => order.transaction)
     order: Order;
 
+    @Column({name: "orderId"})
     @RelationId((transaction: Transaction) => transaction.order) // you need to specify target relation
-    order_id: number;
+    orderId: number;
 
     @ManyToOne(()=> Card, (card:Card) => card.transactions)
     card:Card;
 
+    @Column({name: "cardId"})
     @RelationId((transaction: Transaction) => transaction.card) // you need to specify target relation
-    card_id: number;
+    cardId: number;
 }

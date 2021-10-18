@@ -7,9 +7,9 @@
   "database": "pg_users",
   "entities": ["src/modules/**/*.entity.ts"],
   "migrationsTableName": "custom_migration_table",
-  "migrations": ["migration/*.ts"],
+  "migrations": ["src/migration/*.ts"],
   "cli": {
     "entitiesDir": "src/modules",
-    "migrationsDir": "migration"
+    "migrationsDir": "src/migration"
   }
 }

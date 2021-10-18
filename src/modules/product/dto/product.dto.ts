@@ -11,8 +11,8 @@ export class ProductDto {
     description: string;
 
     @IsNotEmpty()
-    label_id: number;
+    labelId: number;
 
     @IsNotEmpty()
-    category_id:number;
+    categoryId:number;
 }

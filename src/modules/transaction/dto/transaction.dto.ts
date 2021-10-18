@@ -1,5 +1,5 @@
 import { IsNotEmpty, MinLength, IsEmail, IsEnum } from 'class-validator';
-import { ChargeStatus } from '../transaction.entity';
+import {ChargeCurrency, ChargeStatus} from '../transaction.entity';
 
 export class TransactionDto {
 
@@ -10,13 +10,14 @@ export class TransactionDto {
     @IsEnum(ChargeStatus)
     status: ChargeStatus;
 
-    currency:string;
+    @IsEnum(ChargeCurrency)
+    currency:ChargeCurrency;
 
     description: string;
 
     customer_token: string;
 
-    order_id: number;
+    orderId: number;
 
-    card_id: number;
+    cardId: number;
 }

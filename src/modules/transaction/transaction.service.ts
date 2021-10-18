@@ -4,8 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChargeStatus, Transaction } from './transaction.entity';
 import { TransactionDto } from './dto/transaction.dto';
 import { UsersService } from '../users/users.service';
-const COMPLETED_STATUS = 'succeeded'
-const REFUNDED_STATUS = 'refunded'
+
 
 
 @Injectable()
@@ -23,9 +22,10 @@ constructor(
             transactionEntity.amount= pay.amount,
             transactionEntity.status= pay.status,
             transactionEntity.currency= pay.currency,
+                transactionEntity.description = pay.description,
             transactionEntity.customer_token= pay.customer_token,
-            transactionEntity.order_id= pay.order_id,
-            transactionEntity.card_id= pay.card_id
+            transactionEntity.orderId= pay.orderId,
+            transactionEntity.cardId= pay.cardId
         const data = await this.userRepository.save(transactionEntity)
         return data;
         }

@@ -23,8 +23,9 @@ export class OrderController {
     }
 
     @Get('get/order/by/:id')
-    async getOrderById(@Param('id') id) {
-        return await this.orderService.getOrderById(id)
+    async getOrderById(@Param('id') id:string) {
+        const orderId = parseInt(id)
+        return await this.orderService.getOrderById(orderId)
     }
 
     @Delete('delete/order/:id')

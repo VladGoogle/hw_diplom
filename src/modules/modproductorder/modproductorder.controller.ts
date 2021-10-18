@@ -13,13 +13,14 @@ export class ModproductorderController {
     }
 
     @Patch('change/modifier/product/order')
-    async changeModToProductToOrder(@Body () mod_id:number, @Param() id) {
+    async changeModToProductToOrder(@Body () mod_id:number, @Param('id') id) {
         return await this.modprodorderService.changeModForProductOrder(id, mod_id)
     }
 
     @Get('get/product/order/mods/by/:id')
-    async getProductToOrderWithModifiers(@Param() id) {
-        return await this.modprodorderService.getOrderProductWithModsById(id)
+    async getProductToOrderWithModifiers(@Param() id:string) {
+        const modprodorderId = parseInt(id)
+        return await this.modprodorderService.getOrderProductWithModsById(modprodorderId)
     }
 
     @Get('get/product/order/mods/list')

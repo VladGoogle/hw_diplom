@@ -10,11 +10,12 @@ export class Card {
     @Column()
     external_id: string;
 
-    @OneToOne(() => User, (user:User) => user.card)
+    @OneToOne(() => User, user=> user.card)
     user: User;
 
+    @Column({name: "userId"})
     @RelationId((card: Card) => card.user) // you need to specify target relation
-    user_id: number;
+    userId: number;
 
     @OneToMany(type => Transaction, transaction => transaction.card)
     transactions: Transaction[];

@@ -9,7 +9,8 @@ export class TransactionController {
 
     @Get('get/transaction/by/:id')
     async getTransactionById(@Param('id') id) {
-        return await this.transactionService.getTransactionById(id)
+        const transactionId = parseInt(id)
+        return await this.transactionService.getTransactionById(transactionId)
     }
 
     @Get('get/transaction/list')

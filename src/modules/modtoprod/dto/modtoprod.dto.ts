@@ -2,8 +2,8 @@ import { IsNotEmpty, MinLength, IsEmail, IsEnum } from 'class-validator';
 
 export class ModToProdDto {
     @IsNotEmpty()
-    prod_id: number;
+    productId: number;
 
     @IsNotEmpty()
-    mod_id: number;
+    modifierId: number;
 }

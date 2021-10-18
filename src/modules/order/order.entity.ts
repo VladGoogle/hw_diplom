@@ -35,20 +35,23 @@ export class Order {
     @ManyToOne(() => User, (user:User) => user.orders)
     user: User;
 
+    @Column({name: "userId"})
     @RelationId((order: Order) => order.user) // you need to specify target relation
-    user_id: number;
+    userId: number;
 
     @OneToMany(() => ProductOrder, (productorder:ProductOrder)=>productorder.order)
     prodorders:ProductOrder[]
 
+    @Column({name: "productorderId", nullable:true})
     @RelationId((order: Order) => order.prodorders) // you need to specify target relation
-    prodOrder_id: number;
+    productorderId: number;
 
     @OneToMany(() => ModToProductToOrder, (modprodorder:ModToProductToOrder)=>modprodorder.order)
     modprodorders:ModToProductToOrder[]
 
+    @Column({name: "modtoproducttoorderId", nullable:true})
     @RelationId((order: Order) => order.modprodorders) // you need to specify target relation
-    modProdOrder_id: number;
+    modtoproducttoorderId: number;
 
     @OneToOne(() => Transaction, (transaction: Transaction) => transaction.order)
     transaction: Transaction;

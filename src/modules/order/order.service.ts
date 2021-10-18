@@ -22,14 +22,14 @@ export class OrderService {
                     orderEntity.totalPrice =order.totalPrice,
                     orderEntity.tax =order.tax,
                     orderEntity.status =order.status,
-                        orderEntity.user_id =order.user_id,
+                        orderEntity.userId =order.userId,
                         orderEntity.isMods =order.isMods
               if(order.isMods)
               {
-                  orderEntity.modProdOrder_id = order.modProdOrder_id
+                  orderEntity.modtoproducttoorderId = order.modtoproducttoorderId
               }
               else {
-                  orderEntity.prodOrder_id = order.prodOrder_id
+                  orderEntity.productorderId = order.productorderId
               }
               const data =await this.userRepository.save(orderEntity)
               return data;

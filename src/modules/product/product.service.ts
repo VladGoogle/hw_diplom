@@ -27,8 +27,8 @@ constructor(
                   prodEntity.name = prod.name,
                   prodEntity.price = prod.price,
                   prodEntity.description = prod.description,
-                  prodEntity.label_id = prod.label_id,
-                  prodEntity.category_id = prod.category_id
+                  prodEntity.labelId = prod.labelId,
+                  prodEntity.categoryId = prod.categoryId
               const data = await this.userRepository.save(prodEntity)
               console.log(data)
               return data;
@@ -70,8 +70,8 @@ constructor(
                         data.name = product.name;
                         data.price = product.price;
                         data.description = product.description;
-                        data.label_id = product.label_id;
-                        data.category_id = product.category_id;
+                        data.labelId = product.labelId;
+                        data.categoryId = product.categoryId;
                         await this.userRepository.save(data)
                     return data;
         }

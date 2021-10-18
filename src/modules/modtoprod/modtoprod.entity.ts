@@ -14,12 +14,14 @@ export class ModToProd {
     @ManyToOne(() => Product, product => product.modToProds)
     public product!: Product;
 
+    @Column({name: "productId"})
     @RelationId((modtoprod: ModToProd) => modtoprod.product) // you need to specify target relation
-    prod_id: number;
+    productId: number;
 
     @ManyToOne(() => Modifier, modifier => modifier.modToProds)
     public modifier!: Modifier;
 
+    @Column({name: "modifierId"})
     @RelationId((modtoprod: ModToProd) => modtoprod.modifier) // you need to specify target relation
-    mod_id: number;
+    modifierId: number;
 }

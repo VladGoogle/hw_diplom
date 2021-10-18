@@ -22,14 +22,16 @@ export class ModToProductToOrder {
   @ManyToOne(() => ProductOrder, (prodOrder) => prodOrder.modtoprodstoorder)
   public productorder!: ProductOrder;
 
+  @Column({name: "productorderId"})
   @RelationId((modprodorder: ModToProductToOrder) => modprodorder.productorder) // you need to specify target relation
-  prodOrder_id: number;
+  productorderId: number;
 
   @ManyToOne(() => Modifier, (modifier) => modifier.modtoprodstoorder)
   public modifier!: Modifier;
 
+  @Column({name: "modifierId"})
   @RelationId((modprodorder: ModToProductToOrder) => modprodorder.modifier) // you need to specify target relation
-  mod_id: number;
+  modifierId: number;
 
   @ManyToOne(() => Order, (order: Order) => order.modprodorders)
   order: Order;

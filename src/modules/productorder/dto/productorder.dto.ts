@@ -8,7 +8,5 @@ export class ProductOrderDto {
     price: number;
 
     @IsNotEmpty()
-    modProd_id: number;
-
-    modProdToOrder_id: number;
+    modtoprodId: number;
 }

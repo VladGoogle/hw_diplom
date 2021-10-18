@@ -5,5 +5,5 @@ export class CardDto {
     external_id:string;
 
     @IsNotEmpty()
-    user_id:number
+    userId:number
 }

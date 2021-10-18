@@ -13,9 +13,10 @@ export class ModtoprodController {
     }
 
 
-    @Get('get/products/mods')
-    async getProductWithModifiers(@Param() id) {
-        return await this.modprodService.getProdWithMods(id)
+    @Get('get/products/with/mods/by/id/:id')
+    async getProductWithModifiers(@Param('id') id:string) {
+        const modprodId = parseInt(id)
+        return await this.modprodService.getProdWithMods(modprodId)
     }
 
     @Get('product/get/list/mods')

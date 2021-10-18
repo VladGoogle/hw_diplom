@@ -22,9 +22,9 @@ export class OrderDto {
     isMods: boolean;
 
     @IsNotEmpty()
-    user_id: number;
+    userId: number;
 
-    prodOrder_id: number;
+    productorderId: number;
 
-    modProdOrder_id: number;
+    modtoproducttoorderId: number;
 }
