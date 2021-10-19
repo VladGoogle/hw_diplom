@@ -11,6 +11,7 @@ export class Card {
     external_id: string;
 
     @OneToOne(() => User, user=> user.card)
+    @JoinColumn({name: "userId"})
     user: User;
 
     @Column({name: "userId"})

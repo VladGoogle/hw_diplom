@@ -27,7 +27,7 @@ export class ProductOrderService {
         }
 
         async getProductToOrderById(id:number): Promise<ProductOrder> {
-            const result = await this.userRepository.findOne({id},{relations:["modprod"]})
+            const result = await this.userRepository.findOne({where:{id:id}, relations:["modprod"]})
             return result;
         }
 
@@ -36,7 +36,7 @@ export class ProductOrderService {
         }
 
         async changeProdQuantity(id:number, quantity:number): Promise<ProductOrder> {
-            const data = await this.userRepository.findOne({id},{relations:["modprod"]})
+            const data = await this.userRepository.findOne(id)
             data.quantity = quantity;
             await this.userRepository.save(data)
             return data;

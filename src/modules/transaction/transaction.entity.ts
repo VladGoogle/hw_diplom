@@ -38,6 +38,7 @@ export class Transaction {
 
 
     @OneToOne(() => Order, (order: Order) => order.transaction)
+    @JoinColumn({ name: 'orderId' })
     order: Order;
 
     @Column({name: "orderId"})
@@ -45,6 +46,7 @@ export class Transaction {
     orderId: number;
 
     @ManyToOne(()=> Card, (card:Card) => card.transactions)
+    @JoinColumn({ name: 'cardId' })
     card:Card;
 
     @Column({name: "cardId"})

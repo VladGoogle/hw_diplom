@@ -27,9 +27,11 @@ export class ProductOrder {
   price: number;
 
   @OneToOne(() => ModToProd, (modtoprod: ModToProd) => modtoprod.prodorder)
+  @JoinColumn({ name: 'modtoprodId' })
   modprod: ModToProd;
 
-  @Column({ name: 'modtoprodId' })
+
+  @Column({name:'modtoprodId'})
   @RelationId((prodorder: ProductOrder) => prodorder.modprod) // you need to specify target relation
   modtoprodId: number;
 

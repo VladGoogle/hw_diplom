@@ -20,6 +20,7 @@ export class ModToProductToOrder {
   id: number;
 
   @ManyToOne(() => ProductOrder, (prodOrder) => prodOrder.modtoprodstoorder)
+  @JoinColumn({ name: 'productorderId' })
   public productorder!: ProductOrder;
 
   @Column({name: "productorderId"})
@@ -27,6 +28,7 @@ export class ModToProductToOrder {
   productorderId: number;
 
   @ManyToOne(() => Modifier, (modifier) => modifier.modtoprodstoorder)
+  @JoinColumn({ name: 'modifierId' })
   public modifier!: Modifier;
 
   @Column({name: "modifierId"})

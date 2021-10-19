@@ -42,7 +42,7 @@ export class OrderService {
         }
 
         async getOrderById(id:number): Promise<Order> {
-            const result = await this.userRepository.findOne({id},{relations:["user", "prodorders", "modprodorders"]})
+            const result = await this.userRepository.findOne({where:{id:id}, relations:["user", "prodorders", "modprodorders"]})
             return result;
         }
 
@@ -51,7 +51,7 @@ export class OrderService {
             const user = await this.userService.getUserById(user_id)
             if(user.type ==='admin')
             {
-                const order = await this.userRepository.findOne({id},{relations:["user", "prodorders", "modprodorders"]})
+                const order = await this.userRepository.findOne(id)
                 order.status = status;
                 await this.userRepository.save(order)
                 return order;
