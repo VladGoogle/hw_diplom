@@ -9,24 +9,24 @@ import { ModToProd } from './modtoprod.entity';
 export class ModtoprodService {
     constructor( 
         @InjectRepository(ModToProd)
-            private userRepository: Repository<ModToProd>
+            private modtoprodRepository: Repository<ModToProd>
           ) {}
 
           async addModToProduct(obj: ModToProdDto): Promise<ModToProd> {
                 let modprodEntity = new ModToProd()
                     modprodEntity.productId = obj.productId,
                     modprodEntity.modifierId = obj.modifierId
-              const data = await this.userRepository.save(modprodEntity)
+              const data = await this.modtoprodRepository.save(modprodEntity)
               return data;
     }
 
           async getProdsWithMods(): Promise<ModToProd[]> {
-            const result = await this.userRepository.find({relations:["product", "modifier"]})
+            const result = await this.modtoprodRepository.find({relations:["product", "modifier"]})
             return result;
         }
 
         async getProdWithMods(id:number): Promise<ModToProd> {
-            const result = await this.userRepository.findOne({id},{relations:["product", "modifier"]})
+            const result = await this.modtoprodRepository.findOne({id},{relations:["product", "modifier"]})
             return result;
         }
 

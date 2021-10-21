@@ -12,7 +12,7 @@ export class TransactionService {
 
 constructor(
     @InjectRepository(Transaction)
-        private userRepository: Repository<Transaction>,
+        private transRepository: Repository<Transaction>,
         private userService:UsersService
       ) {}
 
@@ -26,38 +26,38 @@ constructor(
             transactionEntity.customer_token= pay.customer_token,
             transactionEntity.orderId= pay.orderId,
             transactionEntity.cardId= pay.cardId
-        const data = await this.userRepository.save(transactionEntity)
+        const data = await this.transRepository.save(transactionEntity)
         return data;
         }
 
     async getTransactionById(id: number): Promise<Transaction | undefined> {
-        const data =  await this.userRepository.findOne({id},{relations:['order', 'card']});
+        const data =  await this.transRepository.findOne({id},{relations:['order', 'card']});
         return data;
     }
 
     async getTransactions(): Promise<Transaction[]> {
-        const data =  await this.userRepository.find({relations:['order', 'card']});
+        const data =  await this.transRepository.find({relations:['order', 'card']});
         return data;
     }
 
     async removeTransaction(id: number): Promise<void> {
-       await this.userRepository.delete(id);
+       await this.transRepository.delete(id);
     }
 
     async changeTransactionAfterRefundForAdmin(status: ChargeStatus, id: number, amount:number): Promise<Transaction>
     {
-            const payment = await this.userRepository.findOne({id},{relations:['order', 'card']})
+            const payment = await this.transRepository.findOne({id},{relations:['order', 'card']})
             payment.status = status;
             payment.amount = amount;
-            await this.userRepository.save(payment)
+            await this.transRepository.save(payment)
             return payment;
         }
 
     async changeTransactionAfterRefundForCustomer(status: ChargeStatus, id: number): Promise<Transaction>
     {
-        const payment = await this.userRepository.findOne({id},{relations:['order', 'card']})
+        const payment = await this.transRepository.findOne({id},{relations:['order', 'card']})
         payment.status = status;
-        await this.userRepository.save(payment)
+        await this.transRepository.save(payment)
         return payment;
     }
     }

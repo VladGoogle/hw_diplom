@@ -12,7 +12,7 @@ import { User } from '../users/user.entity';
 export class OrderService {
     constructor(
         @InjectRepository(Order)
-            private userRepository: Repository<Order>,
+            private orderRepository: Repository<Order>,
             private userService:UsersService
           ) {}
 
@@ -31,18 +31,18 @@ export class OrderService {
               else {
                   orderEntity.productorderId = order.productorderId
               }
-              const data =await this.userRepository.save(orderEntity)
+              const data =await this.orderRepository.save(orderEntity)
               return data;
     }
 
 
           async getOrders(): Promise<Order[]> {
-            const result = await this.userRepository.find({relations:["user", "prodorders", "modprodorders"]})
+            const result = await this.orderRepository.find({relations:["user", "prodorders", "modprodorders"]})
             return result;
         }
 
         async getOrderById(id:number): Promise<Order> {
-            const result = await this.userRepository.findOne({where:{id:id}, relations:["user", "prodorders", "modprodorders"]})
+            const result = await this.orderRepository.findOne({where:{id:id}, relations:["user", "prodorders", "modprodorders"]})
             return result;
         }
 
@@ -51,9 +51,9 @@ export class OrderService {
             const user = await this.userService.getUserById(user_id)
             if(user.type ==='admin')
             {
-                const order = await this.userRepository.findOne(id)
+                const order = await this.orderRepository.findOne(id)
                 order.status = status;
-                await this.userRepository.save(order)
+                await this.orderRepository.save(order)
                 return order;
             }
             else {
@@ -62,6 +62,6 @@ export class OrderService {
         }
 
         async deleteOrder(id:number): Promise<void> {
-            await this.userRepository.delete(id)
+            await this.orderRepository.delete(id)
         }
 }

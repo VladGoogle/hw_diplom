@@ -10,7 +10,7 @@ export class ModifiersService {
 
 constructor( 
     @InjectRepository(Modifier)
-        private userRepository: Repository<Modifier>,
+        private modifierRepository: Repository<Modifier>,
         private userService: UsersService
       ) {}
     
@@ -21,7 +21,7 @@ constructor(
         let modEntity = new Modifier()
             modEntity.name = mod.name,
             modEntity.price= mod.price
-            const data = await this.userRepository.save(modEntity)
+            const data = await this.modifierRepository.save(modEntity)
             return data;
         }
         else {
@@ -30,17 +30,17 @@ constructor(
     }
 
     async getModifierById(id: number): Promise<Modifier | undefined> {
-        const data =  await this.userRepository.findOne(id);
+        const data =  await this.modifierRepository.findOne(id);
         return data;
     }
 
     async getModifierByName(name: string): Promise<Modifier | undefined> {
-        const data =  await this.userRepository.findOne({where:{name}});
+        const data =  await this.modifierRepository.findOne({where:{name}});
         return data;
     }
 
     async getModifiers(): Promise<Modifier[]> {
-        const data =  await this.userRepository.find();
+        const data =  await this.modifierRepository.find();
         return data;
     }
 
@@ -49,7 +49,7 @@ constructor(
        const user = await this.userService.getUserById(user_id)
        if(user.type ==="admin")
        {
-        await this.userRepository.delete(mod_id);
+        await this.modifierRepository.delete(mod_id);
    }
    else {
            throw new ForbiddenException("You must be an admin to delete modifiers")

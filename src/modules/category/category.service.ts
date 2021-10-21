@@ -9,7 +9,7 @@ import { UsersService } from '../users/users.service';
 export class CategoryService {
     constructor( 
         @InjectRepository(Category)
-            private userRepository: Repository<Category>,
+            private categoryRepository: Repository<Category>,
             private userService: UsersService
           ) {}
 
@@ -19,7 +19,7 @@ export class CategoryService {
             {
            let categoryEntity = new Category()
                     categoryEntity.name = category.name
-                const data = await this.userRepository.save(categoryEntity)
+                const data = await this.categoryRepository.save(categoryEntity)
                 return data;
             }
             else {
@@ -28,17 +28,17 @@ export class CategoryService {
         }
     
         async getCategoryById(id: number): Promise<Category | undefined> {
-            const data =  await this.userRepository.findOne(id);
+            const data =  await this.categoryRepository.findOne(id);
             return data;
         }
     
         async getCategoryByName(name: string): Promise<Category | undefined> {
-            const data =  await this.userRepository.findOne({where:{name:name}});
+            const data =  await this.categoryRepository.findOne({where:{name:name}});
             return data;
         }
     
         async getCategories(): Promise<Category[]> {
-            const data =  await this.userRepository.find();
+            const data =  await this.categoryRepository.find();
             return data;
         }
     
@@ -47,7 +47,7 @@ export class CategoryService {
            const user = await this.userService.getUserById(user_id)
            if(user.type ==="admin")
            {
-            await this.userRepository.delete(category_id);
+            await this.categoryRepository.delete(category_id);
        }
        else {
                throw new ForbiddenException("You must be an admin to create a category")

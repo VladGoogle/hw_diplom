@@ -16,7 +16,7 @@ export class ProductService {
 
 constructor( 
     @InjectRepository(Product)
-        private userRepository: Repository<Product>,
+        private productRepository: Repository<Product>,
         private userService: UsersService
       ) {}
     
@@ -29,7 +29,7 @@ constructor(
                   prodEntity.description = prod.description,
                   prodEntity.labelId = prod.labelId,
                   prodEntity.categoryId = prod.categoryId
-              const data = await this.userRepository.save(prodEntity)
+              const data = await this.productRepository.save(prodEntity)
               console.log(data)
               return data;
           } else {
@@ -40,14 +40,14 @@ constructor(
 
     async getProductById(id: number): Promise<Product> {
         console.log(id)
-        const data = await this.userRepository.findOne( {where:{id:id}, relations:["label", "category"]})
+        const data = await this.productRepository.findOne( {where:{id:id}, relations:["label", "category"]})
         //console.log(data)
         return data;
     }
 
 
     async getProducts(): Promise<Product[]> {
-        const result = await this.userRepository.find({relations:["label", "category"]})
+        const result = await this.productRepository.find({relations:["label", "category"]})
         return result;
     }
 
@@ -55,7 +55,7 @@ constructor(
         const user = await this.userService.getUserById(user_id)
         if(user.type ==="admin")
         {
-            await this.userRepository.delete(prod_id);
+            await this.productRepository.delete(prod_id);
         }
         else {
             throw new ForbiddenException("You must be an admin to delete products")
@@ -66,13 +66,13 @@ constructor(
         const user = await this.userService.getUserById(user_id)
         if(user.type==="admin")
         {
-            const data =  await this.userRepository.findOne(prod_id);
+            const data =  await this.productRepository.findOne(prod_id);
                         data.name = product.name;
                         data.price = product.price;
                         data.description = product.description;
                         data.labelId = product.labelId;
                         data.categoryId = product.categoryId;
-                        await this.userRepository.save(data)
+                        await this.productRepository.save(data)
                     return data;
         }
         else {

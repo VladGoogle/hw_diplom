@@ -10,7 +10,7 @@ import {User} from "../users/user.entity";
 export class LabelService {
     constructor( 
         @InjectRepository(Label)
-            private userRepository: Repository<Label>,
+            private labelRepository: Repository<Label>,
             private userService: UsersService
           ) {}
 
@@ -20,7 +20,7 @@ export class LabelService {
             {
                 let labelEntity = new Label();
                 labelEntity.name = label.name
-                const data = await this.userRepository.save(labelEntity)
+                const data = await this.labelRepository.save(labelEntity)
             return data;
         }
         else {
@@ -29,17 +29,17 @@ export class LabelService {
         }
     
         async getLabelById(id: number): Promise<Label | undefined> {
-            const data =  await this.userRepository.findOne(id);
+            const data =  await this.labelRepository.findOne(id);
             return data;
         }
     
         async getLabelByName(name: string): Promise<Label | undefined> {
-            const data =  await this.userRepository.findOne({where: {name:name}});
+            const data =  await this.labelRepository.findOne({where: {name:name}});
             return data;
         }
     
         async getLabels(): Promise<Label[]> {
-            const data =  await this.userRepository.find();
+            const data =  await this.labelRepository.find();
             return data;
         }
     
@@ -48,7 +48,7 @@ export class LabelService {
            const user = await this.userService.getUserById(user_id)
            if(user.type ==="admin")
            {
-            await this.userRepository.delete(label_id);
+            await this.labelRepository.delete(label_id);
        }
        else {
                throw  new ForbiddenException("You must be an admin to delete labels")
@@ -58,9 +58,9 @@ export class LabelService {
 
     async addLabelImage(id:number, image:string): Promise<Label>
     {
-        const data =  await this.userRepository.findOne(id);
+        const data =  await this.labelRepository.findOne(id);
         data.image = image;
-        await this.userRepository.save(data)
+        await this.labelRepository.save(data)
         return data;
     }
 }

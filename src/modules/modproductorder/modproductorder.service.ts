@@ -8,7 +8,7 @@ import { ModToProdToOrderDto } from './dto/modproductorder.dto';
 export class ModproductorderService {
     constructor( 
         @InjectRepository(ModToProductToOrder)
-            private userRepository: Repository<ModToProductToOrder>
+            private modtoprodtoorderRepository: Repository<ModToProductToOrder>
           ) {}
 
           async addModToProductToOrder(obj: ModToProdToOrderDto): Promise<ModToProductToOrder> {
@@ -16,29 +16,29 @@ export class ModproductorderService {
               modProdOrderEntity.productorderId = obj.productorderId,
                   modProdOrderEntity.modifierId = obj.modifierId,
                   modProdOrderEntity.totalProductPrice = obj.totalProductPrice
-              const data = await this.userRepository.save(modProdOrderEntity)
+              const data = await this.modtoprodtoorderRepository.save(modProdOrderEntity)
               return data;
             }
 
       async getOrderProductsWithMods(): Promise<ModToProductToOrder[]> {
-        const result = await this.userRepository.find({relations:["productorder", "modifier"]})
+        const result = await this.modtoprodtoorderRepository.find({relations:["productorder", "modifier"]})
         return result;
     }
 
     async getOrderProductWithModsById(id:number): Promise<ModToProductToOrder> {
-        const result = await this.userRepository.findOne({id},{relations:["productorder", "modifier"]})
+        const result = await this.modtoprodtoorderRepository.findOne({id},{relations:["productorder", "modifier"]})
         return result;
     }
 
     async changeModForProductOrder(id:number, mod_id:number): Promise<ModToProductToOrder> {
-        const data = await this.userRepository.findOne({id},{relations:["productorder", "modifier"]})
+        const data = await this.modtoprodtoorderRepository.findOne({id},{relations:["productorder", "modifier"]})
         data.modifierId = mod_id
-        await this.userRepository.save(data)
+        await this.modtoprodtoorderRepository.save(data)
         return data;
     }
 
     async deleteOrderProductWithMods(id:number): Promise<void> {
-        await this.userRepository.delete(id)
+        await this.modtoprodtoorderRepository.delete(id)
     }
 
 }
