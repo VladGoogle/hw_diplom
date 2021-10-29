@@ -3,34 +3,39 @@ import { ProductDto } from './dto/product.dto';
 import { Controller, Body, Post, UseGuards, Request,Req, Get, Param, Delete, Put } from '@nestjs/common';
 
 
-@Controller('users')
+@Controller()
 export class ProductController {
     constructor(private productService: ProductService) {}
 
-    @Post('admin/:id/create/product')
-    async createProduct(@Body () product:ProductDto, @Param() id) {
-        return await this.productService.createProduct(product, id);
+    @Post('users/:id/products')
+    async createProduct(@Body () product:ProductDto, @Param('id') id:string) {
+        const userId = parseInt(id)
+        return await this.productService.createProduct(product, userId);
     }
 
-    @Put('admin/:id/update/product')
-    async updateProduct(@Body () product:ProductDto, prod_id:number, @Param() id) {
-        return await this.productService.updateProduct(product, id, prod_id)
+    @Put('users/:user_id/products/:prod_id')
+    async updateProduct(@Body () product:ProductDto, @Param('user_id') user_id:string, @Param('prod_id') prod_id:string) {
+        const userId = parseInt(user_id)
+        const prodId = parseInt(prod_id)
+        return await this.productService.updateProduct(product, userId, prodId)
     }
 
-    @Get('product/get/by/:id')
+    @Get('products/:id')
     async getProductById(@Param('id') id:string) {
         const prod_id = parseInt(id)
         return await this.productService.getProductById(prod_id)
     }
 
-    @Get('product/get/list')
+    @Get('products')
     async getProducts() {
         return await this.productService.getProducts()
     }
 
-    @Delete('admin/:id/delete/product')
-    async deleteProduct(@Param('id') user_id, @Body() prod_id:number) {
-        return await this.productService.deleteProduct(user_id, prod_id)
+    @Delete('users/:user_id/products/:prod_id')
+    async deleteProduct(@Param('user_id') user_id:string, @Param('prod_id') prod_id:string) {
+        const userId = parseInt(user_id)
+        const prodId = parseInt(prod_id)
+        return await this.productService.deleteProduct(userId, prodId)
     }
 
 }

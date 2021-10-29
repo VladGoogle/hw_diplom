@@ -3,23 +3,23 @@ import { Controller, Body, Post, UseGuards, Request,Req, Get, Param, Delete, Put
 import { ModtoprodService } from './modtoprod.service';
 import { ModToProdDto } from './dto/modtoprod.dto';
 
-@Controller('users')
+@Controller()
 export class ModtoprodController {
     constructor(private modprodService: ModtoprodService) {}
 
-    @Post('add/modifier/product')
+    @Post('products/:prod_mod/modifiers/:mod_id')
     async addModToProduct(@Body () obj:ModToProdDto) {
         return await this.modprodService.addModToProduct(obj)
     }
 
 
-    @Get('get/products/with/mods/by/id/:id')
+    @Get('products/modifiers/:id')
     async getProductWithModifiers(@Param('id') id:string) {
         const modprodId = parseInt(id)
         return await this.modprodService.getProdWithMods(modprodId)
     }
 
-    @Get('product/get/list/mods')
+    @Get('products/modifiers')
     async getProductsWithModifiers() {
         return await this.modprodService.getProdsWithMods()
     }

@@ -2,33 +2,37 @@ import { Controller, Body, Post, UseGuards, Request,Req, Get, Param, Delete, Put
 import { CategoryService } from './category.service';
 import { CategoryDto } from './dto/category.dto';
 
-@Controller('users')
+@Controller()
 export class CategoryController {
     constructor(private categoryService: CategoryService) {}
 
-    @Post('admin/:id/create/category')
-    async createCategory(@Body() category:CategoryDto, @Param('id') id) {
-        return await this.categoryService.createCategory(category, id);
+    @Post('users/:id/categories')
+    async createCategory(@Body() category:CategoryDto, @Param('id') id:string) {
+        const userId = parseInt(id)
+        return await this.categoryService.createCategory(category, userId);
     }
 
-    @Get('get/category/by/:id')
-    async getCategoryById(@Param('id') id) {
-        return await this.categoryService.getCategoryById(id)
+    @Get('categories/:id')
+    async getCategoryById(@Param('id') id:string) {
+        const categoryId = parseInt(id)
+        return await this.categoryService.getCategoryById(categoryId)
     }
 
-    @Get('get/category/by/name')
-    async getCategoryByName(@Body() name:string) {
+    @Get('categories/:name')
+    async getCategoryByName(@Param('name') name:string) {
         return await this.categoryService.getCategoryByName(name)
     }
 
-    @Get('get/category/list')
+    @Get('categories')
     async getCategories() {
         return await this.categoryService.getCategories()
     }
 
-    @Delete('admin/:id/delete/category')
-    async deleteCategory(@Body() category_id:number, @Param('id') user_id) {
-        return await this.categoryService.deleteCategory(user_id, category_id)
+    @Delete('users/:id/categories/:category_id')
+    async deleteCategory(@Param('category_id') category_id:string, @Param('id') user_id:string) {
+        const userId = parseInt(user_id)
+        const categoryId = parseInt(category_id)
+        return await this.categoryService.deleteCategory(userId, categoryId)
     }
 
 }

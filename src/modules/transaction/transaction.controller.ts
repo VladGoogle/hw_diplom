@@ -3,24 +3,25 @@ import { TransactionDto } from './dto/transaction.dto';
 import { TransactionService } from './transaction.service';
 const REFUNDED_STATUS = 'refunded'
 
-@Controller('users')
+@Controller()
 export class TransactionController {
     constructor(private transactionService: TransactionService) {}
 
-    @Get('get/transaction/by/:id')
-    async getTransactionById(@Param('id') id) {
+    @Get('transactions/:id')
+    async getTransactionById(@Param('id') id:string) {
         const transactionId = parseInt(id)
         return await this.transactionService.getTransactionById(transactionId)
     }
 
-    @Get('get/transaction/list')
+    @Get('transactions')
     async getTransactions() {
         return await this.transactionService.getTransactions()
     }
 
-    @Delete('delete/transaction/by/:id')
-    async removeTransaction(@Param('id') id) {
-        return await this.transactionService.getTransactions()
+    @Delete('transactions/:id')
+    async removeTransaction(@Param('id') id:string) {
+        const transactionId = parseInt(id)
+        return await this.transactionService.removeTransaction(transactionId)
     }
 
 }

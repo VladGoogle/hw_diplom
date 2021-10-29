@@ -3,13 +3,7 @@ import { Product } from './product.entity';
 import { ProductDto } from './dto/product.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createConnection } from 'typeorm';
 import { UsersService } from '../users/users.service';
-import { QueryBuilder } from 'typeorm';
-import { Label } from '../label/label.entity';
-import { Category } from '../category/category.entity';
-import { User } from '../users/user.entity';
-import { isDataType } from 'sequelize-typescript';
 
 @Injectable()
 export class ProductService {

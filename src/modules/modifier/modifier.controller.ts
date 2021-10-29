@@ -4,32 +4,36 @@ import { Controller, Body, Post, UseGuards, Request,Req, Get, Param, Delete, Put
 import { ModifierDto } from './dto/modifier.dto';
 
 
-@Controller('users')
+@Controller()
 export class ModifierController {
     constructor(private modService: ModifiersService) {}
 
-    @Post('admin/:id/create/modifier')
-    async addModToProduct(@Body () mod:ModifierDto, @Param() id) {
-        return await this.modService.createModifier(mod, id)
+    @Post('users/:id/modifiers')
+    async addModToProduct(@Body () mod:ModifierDto, @Param('id') id:string) {
+        const userId = parseInt(id)
+        return await this.modService.createModifier(mod, userId)
     }
 
-    @Get('modififer/get/by/:id')
-    async getModifierById(@Param() id) {
-        return await this.modService.getModifierById(id)
+    @Get('modifiers/:id')
+    async getModifierById(@Param('id') id:string) {
+        const userId = parseInt(id)
+        return await this.modService.getModifierById(userId)
     }
 
-    @Get('modififer/get/by/name')
-    async getModifierByName(@Body() name:string) {
+    @Get('modifiers/:name')
+    async getModifierByName(@Param('name') name:string) {
         return await this.modService.getModifierByName(name)
     }
 
-    @Get('modififer/get/list')
+    @Get('modififers')
     async getModifiers() {
         return await this.modService.getModifiers()
     }
 
-    @Delete('admin/:id/delete/modifier')
-    async deleteModififer(@Param() id, @Body() mod_id:number) {
-        return await this.modService.deleteModifier(id, mod_id)
+    @Delete('users/:user_id/modifiers/:mod_id')
+    async deleteModififer(@Param('user_id') user_id:string, @Param('mod_id') mod_id:string) {
+        const userId = parseInt(user_id)
+        const modId = parseInt(mod_id)
+        return await this.modService.deleteModifier(userId, modId)
     }
 }

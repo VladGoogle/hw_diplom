@@ -5,7 +5,9 @@ import { TransactionDto } from '../transaction/dto/transaction.dto';
 import { ChargeStatus } from '../transaction/transaction.entity';
 import { TransactionService } from '../transaction/transaction.service';
 import { UsersService } from '../users/users.service';
-const stripe = new Stripe('sk_test_51JZVxnLkFhXapQcDocZOJvW6u92pXY4NO7fiw3p05m31lMnSFP0jZVyJyp8R5IbHLWl0QtRzUZlbcmlGc3XwRpZd00dCnp3qc6',
+import * as dotenv from 'dotenv'
+dotenv.config()
+const stripe = new Stripe(process.env.SECRET_KEY,
 {
     apiVersion: '2020-08-27',
 });

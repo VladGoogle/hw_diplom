@@ -3,33 +3,36 @@ import { OrderDto } from './dto/order.dto';
 import { orderStatus } from './order.entity';
 import { OrderService } from './order.service';
 
-@Controller('users')
+@Controller()
 export class OrderController {
     constructor(private orderService: OrderService) {}
 
-    @Post('create/order')
+    @Post('users/:id/orders')
     async createOrder(@Body () order:OrderDto) {
         return await this.orderService.createOrder(order)
     }
 
-    @Patch('admin/change/order/status/:id')
-    async changeOrderStatus(@Body () status:orderStatus, user_id:number, @Param('id') id, ) {
-        return await this.orderService.changeOrderStatus(status, user_id, id)
+    @Patch('users/:user_id/orders/:order_id/status')
+    async changeOrderStatus(@Body () status:orderStatus, @Param('user_id') user_id:string, @Param('order_id') order_id:string) {
+        const userId = parseInt(user_id)
+        const orderId = parseInt(order_id)
+        return await this.orderService.changeOrderStatus(status, userId, orderId)
     }
 
-    @Get('get/orders')
+    @Get('orders')
     async getOrders() {
         return await this.orderService.getOrders()
     }
 
-    @Get('get/order/by/:id')
+    @Get('orders/:id')
     async getOrderById(@Param('id') id:string) {
         const orderId = parseInt(id)
         return await this.orderService.getOrderById(orderId)
     }
 
-    @Delete('delete/order/:id')
-    async deleteOrder(@Param('id') id) {
-        return await this.orderService.deleteOrder(id)
+    @Delete('orders/:id')
+    async deleteOrder(@Param('id') id:string) {
+        const orderId = parseInt(id)
+        return await this.orderService.deleteOrder(orderId)
     }
 }

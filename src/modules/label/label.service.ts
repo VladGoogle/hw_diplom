@@ -56,11 +56,17 @@ export class LabelService {
         
     }
 
-    async addLabelImage(id:number, image:string): Promise<Label>
+    async addLabelImage(label_id:number,user_id:number, image:string): Promise<Label>
     {
-        const data =  await this.labelRepository.findOne(id);
-        data.image = image;
-        await this.labelRepository.save(data)
-        return data;
+        const user = await this.userService.getUserById(user_id)
+        if(user.type ==="admin") {
+            const data = await this.labelRepository.findOne(label_id);
+            data.image = image;
+            await this.labelRepository.save(data)
+            return data;
+        }
+        else {
+            throw  new ForbiddenException("You must be an admin to add labels images")
+        }
     }
 }

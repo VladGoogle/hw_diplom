@@ -7,27 +7,27 @@ import { UserDto } from './dto/user.dto';
 export class UsersController {
     constructor(private userService: UsersService) {}
 
-    @Get('list')
+    @Get()
     async getUsers() {
         return await this.userService.getUsers();
     }
 
-    @Get('get/by/:id')
+    @Get(':id')
     async getUserById(@Param('id') id) {
         return await this.userService.getUserById(id);
     }
 
-    @Get('get/by/email')
-    async getUserByEmail(@Body() email) {
-        return await this.userService.getUserById(email);
+    @Get(':email')
+    async getUserByEmail(@Param('email') email:string) {
+        return await this.userService.getUserByEmail(email);
     }
 
-    @Delete('delete/by/:id')
+    @Delete(':id')
     async removeUserById(@Param('id') id) {
         return await this.userService.deleteUser(id);
     }
 
-    @Patch('update/by/:id')
+    @Patch(':id')
     async updateUser(@Body() user:UserDto, @Param('id') id) {
         return await this.userService.updateUser(user, id);
     }

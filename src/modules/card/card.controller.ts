@@ -2,32 +2,35 @@ import { Controller, Body, Post, UseGuards, Request,Req, Get, Param, Delete, Put
 import { CardService } from './card.service';
 import { CardDto } from './dto/card.dto';
 
-@Controller('users')
+@Controller()
 export class CardController {
     constructor(private cardService: CardService) {}
 
-    @Post('add/card')
+    @Post('users/:id/cards')
     async createCard(@Body () card:CardDto) {
         return await this.cardService.createCard(card)
     }
 
-    @Get('get/card/list')
+    @Get('cards')
     async getCards() {
         return await this.cardService.getCards()
     }
 
-    @Get('get/card/by/:id')
-    async getCardById(@Param('id') id) {
-        return await this.cardService.getCardById(id)
+    @Get('cards/:id')
+    async getCardById(@Param('id') id:string) {
+        const cardId = parseInt(id)
+        return await this.cardService.getCardById(cardId)
     }
 
-    @Get('get/card/by/user_id')
-    async getCardByUserId(@Body() user_id:number) {
-        return await this.cardService.getCardByUserId(user_id)
+    @Get('cards/:user_id')
+    async getCardByUserId(@Body('user_id') user_id:string) {
+        const userId = parseInt(user_id)
+        return await this.cardService.getCardByUserId(userId)
     }
 
-    @Delete('delete/card/:id')
-    async deleteCard(@Param('id') id) {
-        return await this.cardService.deleteCard(id)
+    @Delete('cards/:id')
+    async deleteCard(@Param('id') id:string) {
+        const cardId = parseInt(id)
+        return await this.cardService.deleteCard(cardId)
     }
 }

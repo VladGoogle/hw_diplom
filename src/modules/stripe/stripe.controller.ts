@@ -5,28 +5,28 @@ import {RefundDto, StripeService} from './stripe.service';
 import {UsersService} from "../users/users.service";
 
 
-@Controller('users')
+@Controller()
 export class StripeController {
     constructor(private stripeService: StripeService) {}
 
-    @Post('create/customer/:id')
+    @Post('users/:id/customers')
     async createCustomer(@Param('id') id:string) {
         const userId = parseInt(id)
         return await this.stripeService.newCustomer(userId)
     }
 
-    @Post('create/:token/source/:card_id')
+    @Post('cards/:card_id/sources/:token')
     async createSource(@Param('card_id') card_id:string, @Param('token') token:string) {
         const cardId = parseInt(card_id)
         return await this.stripeService.newSource(cardId, token)
     }
 
-    @Post('create/charge')
+    @Post('charges')
     async createCharge(@Body() charge:TransactionDto) {
         return await this.stripeService.payForOrderWithToken(charge)
     }
 
-    @Post(':user_id/refund/:trans_id')
+    @Post('users/:user_id/refunds/:trans_id')
     async createRefund(@Body() refundObj:RefundDto, @Param('user_id') user_id:string, @Param('trans_id') trans_id:string) {
         const userId = parseInt(user_id)
         const transId = parseInt(trans_id)

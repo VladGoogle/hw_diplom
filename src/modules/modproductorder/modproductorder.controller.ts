@@ -3,33 +3,36 @@ import { ModToProdToOrderDto } from './dto/modproductorder.dto';
 import { ModToProductToOrder } from './modproductorder.entity';
 import { ModproductorderService } from './modproductorder.service';
 
-@Controller('users')
+@Controller()
 export class ModproductorderController {
     constructor(private modprodorderService: ModproductorderService) {}
 
-    @Post('add/modifier/product/order')
+    @Post('modifiers_to_products_to_orders')
     async addModToProductToOrder(@Body () obj:ModToProdToOrderDto) {
         return await this.modprodorderService.addModToProductToOrder(obj)
     }
 
-    @Patch('change/modifier/product/order')
-    async changeModToProductToOrder(@Body () mod_id:number, @Param('id') id) {
-        return await this.modprodorderService.changeModForProductOrder(id, mod_id)
+    @Patch('product_to_order/:prodorder_id/modifiers/:mod_id/change')
+    async changeModToProductToOrder(@Param('prodorder_id') prodorder_id:string, @Param('mod_id') mod_id:string) {
+        const prodorderId = parseInt(prodorder_id)
+        const modId = parseInt(mod_id)
+        return await this.modprodorderService.changeModForProductOrder(prodorderId, modId)
     }
 
-    @Get('get/product/order/mods/by/:id')
-    async getProductToOrderWithModifiers(@Param() id:string) {
+    @Get('modifiers_to_products_to_orders/:id')
+    async getProductToOrderWithModifiers(@Param('id') id:string) {
         const modprodorderId = parseInt(id)
         return await this.modprodorderService.getOrderProductWithModsById(modprodorderId)
     }
 
-    @Get('get/product/order/mods/list')
+    @Get('modifiers_to_products_to_orders')
     async getProductsToOrderWithModifiers() {
         return await this.modprodorderService.getOrderProductsWithMods()
     }
 
-    @Delete('delete/product/order/mods')
-    async deleteProductsToOrderWithModifiers(@Param() id) {
-        return await this.modprodorderService.deleteOrderProductWithMods(id)
+    @Delete('modifiers_to_products_to_orders/:id')
+    async deleteProductsToOrderWithModifiers(@Param('id') id:string) {
+        const modprodorderId = parseInt(id)
+        return await this.modprodorderService.deleteOrderProductWithMods(modprodorderId)
     }
 }

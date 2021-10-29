@@ -6,11 +6,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path'
 
 
-@Controller('users')
+@Controller()
 export class LabelController {
     constructor(private labelService: LabelService) {}
 
-    @Post('admin/add/image/label/:id')
+    @Post('users/:user_id/labels/:label_id/images')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
           destination: './uploads', 
@@ -22,34 +22,38 @@ export class LabelController {
           }
         })
       }))
-      async uploadLabelImage( @UploadedFile() file, @Req() req, @Param('id') id) {
-        console.log(file)
-        await this.labelService.addLabelImage(id, req.file.path)
+      async uploadLabelImage( @UploadedFile() file, @Req() req, @Param('user_id') user_id:string, @Param('label_id') label_id:string) {
+        const userId = parseInt(user_id)
+        const labelId = parseInt(label_id)
+        await this.labelService.addLabelImage(labelId,userId, req.file.path)
       }
 
-    @Post('admin/:id/create/label')
-    async createLabel(@Body() label:LabelDto, @Param() id) {
-        return await this.labelService.createLabel(label, id);
+    @Post('users/:id/labels')
+    async createLabel(@Body() label:LabelDto, @Param('id') id:string) {
+        const labelId = parseInt(id)
+        return await this.labelService.createLabel(label, labelId);
     }
 
-    @Get('admin/get/list/label')
+    @Get('labels')
     async getLabels() {
         return await this.labelService.getLabels();
     }
 
-    @Get('admin/get/label/by/:id')
+    @Get('labels/:id')
     async getLabelById(@Param('id') id) {
         return await this.labelService.getLabelById(id);
     }
 
-    @Get('admin/get/label/by/name')
-    async getLabelByName(@Body() name:string) {
+    @Get('labels/:name')
+    async getLabelByName(@Param('name') name:string) {
         return await this.labelService.getLabelByName(name);
     }
 
-    @Delete('admin/delete/label/by/:id')
-    async deleteLabel(@Param('id') id, @Body() user_id) {
-        return await this.labelService.deleteLabel(user_id, id);
+    @Delete('users/:user_id/labels/:label_id')
+    async deleteLabel(@Param('user_id') user_id:string, @Param('label_id') label_id:string) {
+        const userId = parseInt(user_id)
+        const labelId = parseInt(label_id)
+        return await this.labelService.deleteLabel(userId, labelId);
     }
 
 
